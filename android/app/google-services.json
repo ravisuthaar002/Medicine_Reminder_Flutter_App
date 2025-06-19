@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "719677769813",
+    "project_id": "medicine-reminder-flutter-app",
+    "storage_bucket": "medicine-reminder-flutter-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:719677769813:android:ff9319dd201c64e5176cdc",
+        "android_client_info": {
+          "package_name": "com.example.medicine_reminder_flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "719677769813-dne7g1219qgstl4pkh426p32i7pgnavq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.medicine_reminder_flutter_app",
+            "certificate_hash": "cda2cb84bf75dedbdbe3940a59cf1ee5937cb940"
+          }
+        },
+        {
+          "client_id": "719677769813-af0ppmoo8c3s9o4isk3c7f274nhk560u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEOhS_Wgsvx4-l1crNp4a3zGhRHEByyHE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "719677769813-af0ppmoo8c3s9o4isk3c7f274nhk560u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
