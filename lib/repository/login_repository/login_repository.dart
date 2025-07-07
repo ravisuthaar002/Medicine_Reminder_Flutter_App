@@ -19,6 +19,7 @@ class LoginRepository{
 
   Future<dynamic> loginApi(var data)async{
     if (_formKey.currentState!.validate()) return;
+    if (_formKey.currentState!.validate()) return;
 
 
       loginViewModal.loading.value = true;
