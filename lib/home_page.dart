@@ -3,12 +3,12 @@ import 'package:medicine_reminder_flutter_app/add_medicine.dart';
 import 'package:medicine_reminder_flutter_app/calendar.dart';
 import 'package:medicine_reminder_flutter_app/home_screen.dart';
 
-class Home_page extends StatefulWidget{
+class HomePage extends StatefulWidget{
   @override
-  State<Home_page> createState() => _Home_pageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _Home_pageState extends State<Home_page> {
+class _HomePageState extends State<HomePage> {
 
   int _currentIndex = 0;
 

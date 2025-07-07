@@ -127,7 +127,7 @@ verify()async{
 
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => Home_page()),
+      MaterialPageRoute(builder: (context) => HomePage()),
     );
   } on FirebaseAuthException catch (e) {
     String errorMessage = "";

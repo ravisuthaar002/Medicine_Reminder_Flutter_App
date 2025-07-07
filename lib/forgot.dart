@@ -13,19 +13,25 @@ class _ForgotState extends State<Forgot> {
 
   TextEditingController emailController = TextEditingController();
 
-  // bool isloading = false;
 
-  reset()async{
-    // setState(() {
-    //   isloading = true;
-    // });
-    await FirebaseAuth.instance.sendPasswordResetEmail(email: emailController.text);
-    // setState(() {
-    //   isloading = false;
-    // });
+  reset() async {
+    try {
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: emailController.text);
+
+      // Show success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Password reset email sent!')),
+      );
+    } catch (e) {
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
+    }
   }
 
-  // isloading?Center(child: CircularProgressIndicator(),) :
+
 
   @override
   Widget build(BuildContext context) {

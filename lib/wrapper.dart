@@ -21,7 +21,7 @@ class _WrapperState extends State<Wrapper> {
              builder: (context,snapshot){
                if(snapshot.hasData){
                    if (snapshot.data!.phoneNumber != null) {
-                     return Home_page();
+                     return HomePage();
                    }else{
                      return Personal_Data_Page();
                    }
