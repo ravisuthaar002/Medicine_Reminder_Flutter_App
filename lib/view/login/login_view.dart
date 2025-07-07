@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:medicine_reminder_flutter_app/res/font_size/app_font_size.dart';
 
@@ -15,7 +17,9 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
 
-  LoginViewModal loginViewModal = LoginViewModal();
+  final LoginViewModal loginViewModal = Get.find<LoginViewModal>();
+
+
   final _formkey = GlobalKey<FormState>();
 
   @override
@@ -111,7 +115,7 @@ class _LoginViewState extends State<LoginView> {
                         backgroundColor: AppColors.orange800,
                         padding: EdgeInsets.symmetric(vertical: 8,horizontal: 40)),
                     onPressed: () {
-                      // logIn();
+                      loginViewModal.loginApi();
                       if (_formkey.currentState!.validate()) {
                         // ScaffoldMessenger.of(context).showSnackBar(
                         //   SnackBar(content: Text("Logging in...")),

@@ -10,19 +10,25 @@ import '../../../utils/utils.dart';
 import '../user_preference/user_preference_view_modal.dart';
 
 class LoginViewModal extends GetxController{
+  late final LoginRepository _api;
 
-  final _api = LoginRepository();
 
   RxBool obsecurePassword = true.obs;
   RxBool loading = false.obs;
 
-  UserPreference userPreference = UserPreference();
+  var userPreference = UserPreference();
 
   final emailController = TextEditingController().obs;
   final passwordController = TextEditingController().obs;
 
   final emailFocusNode = FocusNode().obs;
   final passwordFocusNode = FocusNode().obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    _api = LoginRepository(this);
+  }
 
   void loginApi(){
     loading.value = true;

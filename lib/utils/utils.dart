@@ -26,7 +26,8 @@ class Utils{
   static toastMessageCenter(String message){
     Fluttertoast.showToast(
         msg: message,
-        backgroundColor: AppColors.black54,
+        backgroundColor: AppColors.orange800,
+        textColor: AppColors.white,
         gravity: ToastGravity.CENTER
     );
   }
