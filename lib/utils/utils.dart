@@ -31,6 +31,15 @@ class Utils{
         gravity: ToastGravity.CENTER
     );
   }
+  static toastMessageTop(String message){
+    Fluttertoast.showToast(
+        msg: message,
+        backgroundColor: AppColors.orange800,
+        textColor: AppColors.white,
+        gravity: ToastGravity.TOP,
+
+    );
+  }
 
   static snackBar(String title, String message){
     Get.snackbar(

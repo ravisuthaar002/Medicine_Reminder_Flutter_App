@@ -1,23 +1,15 @@
-
-
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:medicine_reminder_flutter_app/res/routes/routes_name.dart';
 
 import '../../../data/response/app_exceptions.dart';
 import '../../../utils/utils.dart';
-import '../user_preference/user_preference_view_modal.dart';
 
-class LoginViewModal extends GetxController{
-
-
-  RxBool obsecurePassword = true.obs;
-  RxBool loading = false.obs;
-
-  var userPreference = UserPreference();
+class SignupViewModal extends GetxController{
+  final _formKey = GlobalKey<FormState>();
 
   final emailController = TextEditingController().obs;
   final passwordController = TextEditingController().obs;
@@ -25,20 +17,21 @@ class LoginViewModal extends GetxController{
   final emailFocusNode = FocusNode().obs;
   final passwordFocusNode = FocusNode().obs;
 
+  RxBool obsecurePassword = true.obs;
+  RxBool isChecked = false.obs;
+  RxBool loading = false.obs;
 
-
-  Future<dynamic> loginApi()async{
-
-
+  signup()async {
     loading.value = true;
 
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.value.toString(),
-        password: passwordController.value.toString(),
-      );
-      // Get.offAll(Wrapper());                    //see this
-    } on SocketException{
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.value.text,
+          password: passwordController.value.text);
+
+      Get.toNamed(RoutesName.verifyEmail);
+
+    }on SocketException{
       throw InternetException('');
     } on RequestTimeOut{
       throw RequestTimeOut('');
@@ -65,23 +58,6 @@ class LoginViewModal extends GetxController{
       Utils.toastMessageTop("An error occurred. Please try again.");
 
     }
-
     loading.value = false;
-
-  }
-
-
-
-  Future<dynamic> signIn()async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-    final GoogleSignInAuthentication? googleAuth = await googleUser
-        ?.authentication;
-
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-    await FirebaseAuth.instance.signInWithCredential(credential);
   }
 }
