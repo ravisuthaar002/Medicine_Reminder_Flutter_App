@@ -12,6 +12,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
 
+
   SplashServices splashServices = SplashServices();
 
   @override
@@ -23,11 +24,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('email_hint'.tr),
-        ),
-        body: Center(child: Text('welcome_back'.tr),)
-    );
+    // TODO: implement build
+    throw UnimplementedError();
   }
+
+
 }

@@ -88,7 +88,7 @@ class _SignupPageState extends State<SignupPage> {
                       loginViewModal.signup();
                     },
                     child: loginViewModal.loading.value ?
-                        CircularProgressIndicator() :
+                        CircularProgressIndicator(color: AppColors.white,) :
                     Text("Register",style: TextStyle(fontSize: AppFontSize.medium,color: AppColors.white)),
                   )),
                 ),
@@ -101,7 +101,7 @@ class _SignupPageState extends State<SignupPage> {
                   children: [
                     Text('Don`t have an account?',style: TextStyle(fontSize: AppFontSize.small),),
                     TextButton(onPressed: (){
-                      Get.toNamed(RoutesName.loginView);
+                      Get.offAllNamed(RoutesName.loginView);
                     }, child: Text('Sign in',style: TextStyle(fontSize: AppFontSize.small,color: AppColors.orange800),))
                   ],
                 )

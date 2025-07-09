@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:medicine_reminder_flutter_app/res/components/email_input_filed.dart';
 import 'package:medicine_reminder_flutter_app/res/components/password_input_filed.dart';
 import 'package:medicine_reminder_flutter_app/res/font_size/app_font_size.dart';
@@ -22,7 +20,7 @@ class _LoginViewState extends State<LoginView> {
   final LoginViewModal loginViewModal = LoginViewModal();
 
 
-  final _formkey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +29,7 @@ class _LoginViewState extends State<LoginView> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 35,vertical: 70),
           child: Form(
-            key: _formkey,
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -69,14 +67,14 @@ class _LoginViewState extends State<LoginView> {
                           padding: EdgeInsets.symmetric(vertical: 8,horizontal: 40)),
                       onPressed: () {
                         loginViewModal.loginApi();
-                        if (_formkey.currentState!.validate()) {
+                        if (_formKey.currentState!.validate()) {
                           // ScaffoldMessenger.of(context).showSnackBar(
                           //   SnackBar(content: Text("Logging in...")),
                           // );
                         }
                       },
                       child: loginViewModal.loading.value ?
-                       CircularProgressIndicator() :
+                       CircularProgressIndicator(color: AppColors.white,) :
                        Text("Log In",style: TextStyle(fontSize: AppFontSize.medium,color: AppColors.white)),
                      ),
                     ),
@@ -97,7 +95,7 @@ class _LoginViewState extends State<LoginView> {
                   children: [
                     Text('Don`t have an account?',style: TextStyle(fontSize: AppFontSize.small),),
                     TextButton(onPressed: (){
-                    Get.toNamed(RoutesName.signupView);
+                    Get.offAllNamed(RoutesName.signupView);
                     }, child: Text('Register',style: TextStyle(fontSize: 14,color: AppColors.orange800),))
                   ],
                 )

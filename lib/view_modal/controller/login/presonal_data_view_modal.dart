@@ -53,7 +53,6 @@ class PersonalDataViewModal extends GetxController{
           phoneNumber: '+91${phoneController.value.text.toString()}'
       );
       if (_formKey.currentState!.validate()) {
-        print("not work");
       }
     }
       loading.value = false;

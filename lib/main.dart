@@ -11,7 +11,7 @@ void main() async {
   await Firebase.initializeApp();
   await NotificationServices.initialize();
 
-  Get.put(LoginViewModal());
+  // Get.put(LoginViewModal());
 
   runApp(const MyApp());
 }

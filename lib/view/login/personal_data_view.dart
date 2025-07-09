@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:medicine_reminder_flutter_app/res/colors/app_colors.dart';
 import 'package:medicine_reminder_flutter_app/res/font_size/app_font_size.dart';
 import 'package:medicine_reminder_flutter_app/view_modal/controller/login/presonal_data_view_modal.dart';
@@ -23,10 +22,10 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(size: 22,color: AppColors.white),
+        iconTheme: IconThemeData(size: AppFontSize.mediumPlus,color: AppColors.white),
         title: Text(
           'Personal Detail',
-          style: TextStyle(fontSize: 22, color: AppColors.white),
+          style: TextStyle(fontSize: AppFontSize.mediumPlus, color: AppColors.white),
         ),
         backgroundColor: AppColors.orange800,
         centerTitle: true,
@@ -206,7 +205,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                       personalDataViewModal.send();
                     },
                     child:Obx(()=> personalDataViewModal.loading.value ?
-                     CircularProgressIndicator() :
+                     CircularProgressIndicator(color: AppColors.white,) :
                      Text(
                       'Save & Send OTP',
                       style: TextStyle(fontSize: AppFontSize.medium, color: AppColors.white),

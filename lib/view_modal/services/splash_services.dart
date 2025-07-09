@@ -16,11 +16,15 @@ class SplashServices{
 
     userPreference.getUser().then((value){
       if (value.token == null || value.token!.isEmpty) {
-        Timer(const Duration(seconds: 3),
-                () => Get.toNamed(RoutesName.loginView));
+        // Timer(const Duration(seconds: 3),
+        //         () =>
+                    Get.toNamed(RoutesName.wrapper);
+        // );
       }else{
-        Timer(const Duration(seconds: 3),
-                () => Get.toNamed(RoutesName.homePage));
+        // Timer(const Duration(seconds: 3),
+        //         () =>
+                    Get.toNamed(RoutesName.homePage);
+        // );
       }
     });
 

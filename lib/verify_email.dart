@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:medicine_reminder_flutter_app/signup_page.dart';
-import 'package:medicine_reminder_flutter_app/wrapper.dart';
+import 'package:medicine_reminder_flutter_app/view_modal/controller/login/wrapper_view_modal.dart';
 
 class Verify_email extends StatefulWidget{
   const Verify_email({super.key});

@@ -9,7 +9,7 @@ import '../../../data/response/app_exceptions.dart';
 import '../../../utils/utils.dart';
 
 class SignupViewModal extends GetxController{
-  final _formKey = GlobalKey<FormState>();
+
 
   final emailController = TextEditingController().obs;
   final passwordController = TextEditingController().obs;

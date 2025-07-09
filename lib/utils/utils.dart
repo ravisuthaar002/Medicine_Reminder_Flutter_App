@@ -40,6 +40,24 @@ class Utils{
 
     );
   }
+  static toastMessageTopRed(String message){
+    Fluttertoast.showToast(
+        msg: message,
+        backgroundColor: AppColors.orange800,
+        textColor: AppColors.red,
+        gravity: ToastGravity.TOP,
+
+    );
+  }
+  static toastMessageTopGreen(String message){
+    Fluttertoast.showToast(
+        msg: message,
+        backgroundColor: AppColors.orange800,
+        textColor: AppColors.green,
+        gravity: ToastGravity.TOP,
+
+    );
+  }
 
   static snackBar(String title, String message){
     Get.snackbar(

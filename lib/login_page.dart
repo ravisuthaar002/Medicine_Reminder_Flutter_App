@@ -5,7 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:medicine_reminder_flutter_app/forgot.dart';
 import 'package:medicine_reminder_flutter_app/signup_page.dart';
-import 'package:medicine_reminder_flutter_app/wrapper.dart';
+import 'package:medicine_reminder_flutter_app/view_modal/controller/login/wrapper_view_modal.dart';
 
 class Login_page extends StatefulWidget{
   @override

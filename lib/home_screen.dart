@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:medicine_reminder_flutter_app/threeline_menu_page.dart';
+import 'package:medicine_reminder_flutter_app/view/home_pages/threeline_menu_page.dart';
 
 class Home_Screen extends StatefulWidget {
   @override
@@ -130,7 +130,7 @@ class _Home_ScreenState extends State<Home_Screen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ThreeLine_Menu_Page()),
+                        MaterialPageRoute(builder: (context) => ThreeLineMenuPage()),
                       );
                     },
                     icon: Icon(Icons.menu, size: 30, color: Colors.orange.shade800),

@@ -29,9 +29,9 @@ class OtpVerificationViewModal extends GetxController {
   }
 
   final otpController = TextEditingController();
-  var loading = false.obs;
-  var resendTime = 60.obs;
-  var isResendEnabled = false.obs;
+  RxBool loading = false.obs;
+  RxInt resendTime = 60.obs;
+  RxBool isResendEnabled = false.obs;
   Timer? _timer;
 
   void startTimer() {
@@ -90,7 +90,7 @@ class OtpVerificationViewModal extends GetxController {
   }
 
   void resendOTP() async {
-    startTimer(); // Restart the timer
+
 
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: "+91$phone",
@@ -102,6 +102,10 @@ class OtpVerificationViewModal extends GetxController {
       codeSent: (String verificationId, int? resendToken) {
         verificationId = verificationId;
         Utils.toastMessageTop("OTP resent successfully");
+        // Restart the timer
+        resendTime.value = 60;
+        startTimer();
+        isResendEnabled.value = false;
       },
       codeAutoRetrievalTimeout: (String verificationId) {},
     );

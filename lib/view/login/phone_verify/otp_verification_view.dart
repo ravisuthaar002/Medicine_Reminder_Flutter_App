@@ -1,9 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:medicine_reminder_flutter_app/res/font_size/app_font_size.dart';
 import 'package:pinput/pinput.dart';
 
+import '../../../res/colors/app_colors.dart';
 import '../../../view_modal/controller/login/otp_verification_view_modal.dart';
 
 
@@ -28,27 +29,33 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
 
   final otpVerifyViewModel = Get.put(OtpVerificationViewModal());
 
+  @override
+  void initState() {
+    super.initState();
+    otpVerifyViewModel.startTimer(); // start countdown here
+  }
+
 
   @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
       width: 56,
       height: 56,
-      textStyle: TextStyle(fontSize: 22, color: Colors.black87, fontWeight: FontWeight.w600),
+      textStyle: TextStyle(fontSize: 22, color: AppColors.black87, fontWeight: FontWeight.w600),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black26),
+        border: Border.all(color: AppColors.black26),
         borderRadius: BorderRadius.circular(20),
       ),
     );
 
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
-      border: Border.all(color: Colors.orange.shade800),
+      border: Border.all(color: AppColors.orange800),
       borderRadius: BorderRadius.circular(14),
     );
 
     final submittedPinTheme = defaultPinTheme.copyWith(
       decoration: defaultPinTheme.decoration?.copyWith(
-        color: Colors.black12,
+        color: AppColors.black12,
       ),
     );
     return Scaffold(
@@ -64,11 +71,11 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('OTP Verification',style: TextStyle(fontSize: 35,fontWeight: FontWeight.w900),),
+                  Text('OTP Verification',style: TextStyle(fontSize: AppFontSize.large,fontWeight: FontWeight.w900),),
 
-                  SizedBox(height: 20,),
-                  Text('Enter the verification code we just sent on your phone number: +91 ${widget.phone}  ',style: TextStyle(fontSize: 14),),
-                  SizedBox(height: 20,),
+                  SizedBox(height: Get.height * .02,),
+                  Text('Enter the verification code we just sent on your phone number: +91 ${widget.phone}  ',style: TextStyle(fontSize: AppFontSize.small),),
+                  SizedBox(height: Get.height * .05,),
                   Center(
                     child: Pinput(
                       controller: otpVerifyViewModel.otpController,
@@ -87,10 +94,10 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
                       onCompleted: (pin) => print(pin),
                     ),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(height: Get.height * .05,),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.orange.shade800,
+                          backgroundColor: AppColors.orange800,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)
                           ),
@@ -101,18 +108,18 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
                       },
 
                       child: Obx(() => otpVerifyViewModel.loading.value ?
-                       CircularProgressIndicator() :
+                       CircularProgressIndicator(color: AppColors.white,) :
                        Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Verify',style: TextStyle(color: Colors.white,fontSize: 18),),
-                          Icon(Icons.arrow_forward,color: Colors.white,size: 25,)
+                          Text('Verify',style: TextStyle(color: AppColors.white,fontSize: AppFontSize.medium),),
+                          Icon(Icons.arrow_forward,color: AppColors.white,size: 25,)
                         ],
                       ) )),
 
-                  Container(height: 20,),
+                  SizedBox(height: Get.height * .03,),
 
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -121,15 +128,12 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
                          otpVerifyViewModel.isResendEnabled.value
                             ? TextButton(
                           onPressed: otpVerifyViewModel.resendOTP,
-                          child: Text('Resend OTP', style: TextStyle(color: Colors.orange.shade800)),
+                          child: Text('Resend OTP', style: TextStyle(color: AppColors.orange800)),
                         )
-                            : Obx(()=> Text('Resend OTP in ${otpVerifyViewModel.resendTime} sec', style: TextStyle(color: Colors.black45))),
-                        )],
+                            : Text('Resend OTP in ${otpVerifyViewModel.resendTime.value} sec', style: TextStyle(color: AppColors.black54)),
+                      )],
                     ),
                   ),
-
-
-
 
                 ],
               ),

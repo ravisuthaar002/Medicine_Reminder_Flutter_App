@@ -55,7 +55,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       if (_formKey.currentState!.validate()) {}
                     },
                     child:Obx(()=> forgotPasswordViewModal.loading.value ?
-                        CircularProgressIndicator() :
+                        CircularProgressIndicator(color: AppColors.white,) :
                         Text("Send Email",style: TextStyle(fontSize: AppFontSize.medium,color: AppColors.white)),
                   ),
                 ),

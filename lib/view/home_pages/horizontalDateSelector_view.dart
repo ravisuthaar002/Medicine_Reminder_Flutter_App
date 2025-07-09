@@ -1,36 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:medicine_reminder_flutter_app/res/colors/app_colors.dart';
+import 'package:medicine_reminder_flutter_app/view_modal/controller/home_pages/horizontalDataSelector_view_modal.dart';
 
 class HorizontalDateSelector extends StatefulWidget {
   final Function(DateTime) onDateSelected;
 
-  HorizontalDateSelector({required this.onDateSelected});
+  const HorizontalDateSelector({super.key, required this.onDateSelected});
 
   @override
   State<HorizontalDateSelector> createState() => _HorizontalDateSelectorState();
 }
 
 class _HorizontalDateSelectorState extends State<HorizontalDateSelector> {
-  DateTime selectedDate = DateTime.now();
+
+  final horizontalDataSelector = HorizontalDataSelectorViewModal();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 80,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: 15,
         itemBuilder: (_, index) {
           DateTime date = DateTime.now().add(Duration(days: index));
-          bool isSelected = date.day == selectedDate.day &&
-              date.month == selectedDate.month &&
-              date.year == selectedDate.year;
+              horizontalDataSelector.selected.value = date.day == horizontalDataSelector.selectedDate.day &&
+              date.month == horizontalDataSelector.selectedDate.month &&
+              date.year == horizontalDataSelector.selectedDate.year;
 
-          return GestureDetector(
+          return Obx(()=> GestureDetector(
             onTap: () {
-              setState(() {
-                selectedDate = date;
-              });
+                horizontalDataSelector.selectedDate = date;
               widget.onDateSelected(date);
             },
             child: Container(
@@ -38,7 +40,7 @@ class _HorizontalDateSelectorState extends State<HorizontalDateSelector> {
               margin: EdgeInsets.symmetric(horizontal: 8),
               padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: isSelected ? Colors.orange.shade800 : Colors.grey.shade300,
+                color: horizontalDataSelector.selected.value ? AppColors.orange800 : AppColors.grey300,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
@@ -48,7 +50,7 @@ class _HorizontalDateSelectorState extends State<HorizontalDateSelector> {
                 ],
               ),
             ),
-          );
+          ));
         },
       ),
     );

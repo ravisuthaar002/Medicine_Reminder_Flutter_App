@@ -1,19 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'horizontalDateSelector.dart';
+import 'package:medicine_reminder_flutter_app/res/font_size/app_font_size.dart';
+import 'package:medicine_reminder_flutter_app/view_modal/controller/home_pages/calendar_view_modal.dart';
+import '../../res/colors/app_colors.dart';
+import 'horizontalDateSelector_view.dart';
 
-class Calendar extends StatefulWidget {
+class CalendarView extends StatefulWidget {
+  const CalendarView({super.key});
+
   @override
-  State<Calendar> createState() => _CalendarState();
+  State<CalendarView> createState() => _CalendarViewState();
 }
 
-class _CalendarState extends State<Calendar> {
+class _CalendarViewState extends State<CalendarView> {
   final user = FirebaseAuth.instance.currentUser;
 
-  DateTime selectedDate = DateTime.now();
-  String get formattedSelectedDate => DateFormat('yyyy-MM-dd').format(selectedDate);
+  final calendarViewModal = CalendarViewModal();
 
 
   @override
@@ -21,8 +26,8 @@ class _CalendarState extends State<Calendar> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.orange.shade800,
-        title: Text('Calendar', style: TextStyle(color: Colors.white, fontSize: 24)),
+        backgroundColor: AppColors.orange800,
+        title: Text('Calendar', style: TextStyle(color: AppColors.white, fontSize: AppFontSize.mediumPlus)),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -31,23 +36,21 @@ class _CalendarState extends State<Calendar> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(formattedSelectedDate, style: TextStyle(fontSize: 20)),
-              SizedBox(height: 20),
+              Text(calendarViewModal.formattedSelectedDate.value, style: TextStyle(fontSize: AppFontSize.medium)),
+              SizedBox(height: Get.height * .02),
 
-              HorizontalDateSelector(
+              Obx(()=> HorizontalDateSelector(
                 onDateSelected: (date) {
-                  setState(() {
-                    selectedDate = date;
-                  });
+                  calendarViewModal.formattedSelectedDate.value = date as String;
                 },
-              ),
+              )),
 
-              SizedBox(height: 30),
+              SizedBox(height: Get.height * .02),
               Text(
-                "Pills for ${DateFormat('dd MMM yyyy').format(selectedDate)}",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                "Pills for ${DateFormat('dd MMM yyyy').format(calendarViewModal.selectedDate)}",
+                style: TextStyle(fontSize: AppFontSize.medium, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: Get.height * .01),
 
               StreamBuilder(
                 stream: FirebaseFirestore.instance
@@ -70,7 +73,7 @@ class _CalendarState extends State<Calendar> {
                   final pillsForDate = docs.where((doc) {
                     try {
                       final List<dynamic> dates = doc.data()["Dates"] ?? [];
-                      return dates.contains(formattedSelectedDate);
+                      return dates.contains(calendarViewModal.formattedSelectedDate.value);
                     } catch (e) {
                       return false;
                     }
@@ -93,24 +96,24 @@ class _CalendarState extends State<Calendar> {
                         margin: EdgeInsets.symmetric(vertical: 6),
                         padding: EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.orange.shade100,
+                          color: AppColors.orange100,
                           borderRadius: BorderRadius.circular(12),
-                          border: Border.all(color: Colors.orange.shade400),
+                          border: Border.all(color: AppColors.orange400),
                         ),
                         child: Row(
                           children: [
                             Image.asset('assets/images/medicine_tablet1.png', width: 50, height: 50),
-                            SizedBox(width: 12),
+                            SizedBox(width: Get.height * .01),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(doc["Pill"], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                                  SizedBox(height: 4),
-                                  Text("Dose: ${doc["Dose"]} - ${doc["Usage"]}", style: TextStyle(fontSize: 14)),
+                                  Text(doc["Pill"], style: TextStyle(fontSize: AppFontSize.smallPlus, fontWeight: FontWeight.bold)),
+                                  SizedBox(height: Get.height * .002),
+                                  Text("Dose: ${doc["Dose"]} - ${doc["Usage"]}", style: TextStyle(fontSize: AppFontSize.small)),
                                   Text(
                                     "Time: ${(doc["Times"] as List).join(", ")}",
-                                    style: TextStyle(fontSize: 14),
+                                    style: TextStyle(fontSize: AppFontSize.small),
                                   ),
                                 ],
                               ),
