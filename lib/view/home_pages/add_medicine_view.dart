@@ -1,11 +1,6 @@
-import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:intl/intl.dart';
 import 'package:medicine_reminder_flutter_app/res/font_size/app_font_size.dart';
 import 'package:medicine_reminder_flutter_app/view_modal/controller/home_pages/add_medicine_view_modal.dart';
 
@@ -50,7 +45,6 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                     Text('Pill name',style: TextStyle(fontSize: AppFontSize.medium),),
                     TextField(
                       controller: addMedicineViewModal.pillController,
-                      keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                           hintText: "Enter the pill name",
                           filled: true,
@@ -71,17 +65,29 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                     Row(
                       children: [
                         Expanded(
-                          child: _buildDropdown(label: "dose", value: addMedicineViewModal.selectedDose.value, items: ["0.5", "1", "2"],onChanged: (val) {setState(() {addMedicineViewModal.selectedDose.value = val!;});},),
-                        ),
+                          child:Obx(()=> _buildDropdown(
+                            label: "dose",
+                            value: addMedicineViewModal.selectedDose.value,
+                            items: ["0.5", "1", "2"],
+                            onChanged: (val) {
+                              addMedicineViewModal.selectedDose.value = val!;
+                            }),
+                        )),
                         SizedBox(width: Get.width * .012),
                         Expanded(
-                          child: _buildDropdown(label: "shape", value: addMedicineViewModal.selectedShape.value, items: ["Capsule", "Tablet", "Liquid"],onChanged: (val) {setState(() {addMedicineViewModal.selectedShape.value = val!;});},),
-                        ),
+                          child:Obx(()=> _buildDropdown(
+                            label: "shape",
+                            value: addMedicineViewModal.selectedShape.value,
+                            items: ["Capsule", "Tablet", "Liquid"],
+                            onChanged: (val) {
+                              addMedicineViewModal.selectedShape.value = val!;
+                            },),
+                        )),
                       ],
                     ),
                     SizedBox(height: Get.height * .012),
         
-                    Column(
+                    Obx(()=> Column(
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,9 +96,7 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                             IconButton(
                               icon: Icon(Icons.add_circle, color: AppColors.orange, size: 28),
                               onPressed: () {
-                                setState(() {
                                   addMedicineViewModal.timeList.add({"hour": "11", "minute": "00", "period": "AM"});
-                                });
                               },
                             ),
                           ],
@@ -102,49 +106,53 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                         /// All time dropdowns
                         Column(
                           children: List.generate(addMedicineViewModal.timeList.length, (index) {
-                            return Padding(
+                             return Padding(
                               padding: const EdgeInsets.only(bottom: 12),
                               child: Row(
                                 children: [
         
                                   /// Hour
-                                  Obx(()=>  _timeDropdown(
+                                   _timeDropdown(
                                     value: addMedicineViewModal.timeList[index]["hour"]!,
-                                    items: addMedicineViewModal.hours.value,
-                                    onChanged: (val) {
-                                    addMedicineViewModal.timeList[index]["hour"] = val!;
-                                    },
-                                  )),
+                                    items: addMedicineViewModal.hours,
+                                     onChanged: (val) {
+                                       addMedicineViewModal.timeList[index]["hour"] = val!;
+                                       addMedicineViewModal.timeList.refresh();
+                                     },
+
+                                   ),
         
-                                  Text(" : ", style: TextStyle(fontSize: 18)),
+                                  Text(" : ", style: TextStyle(fontSize: AppFontSize.smallPlus)),
         
                                   /// Minute
-                                   Obx(()=> _timeDropdown(
+                                   _timeDropdown(
                                     value: addMedicineViewModal.timeList[index]["minute"]!,
-                                    items: addMedicineViewModal.minutes.value,
+                                    items: addMedicineViewModal.minutes,
                                     onChanged: (val) {
                                       addMedicineViewModal.timeList[index]["minute"] = val!;
+                                      addMedicineViewModal.timeList.refresh();
                                     },
-                                  )),
+                                  ),
         
                                   SizedBox(width: Get.width * .01),
         
                                   /// AM/PM
-                                  Obx(()=> _timeDropdown(
+                                  _timeDropdown(
                                     value: addMedicineViewModal.timeList[index]["period"]!,
-                                    items: addMedicineViewModal.periods.value,
+                                    items: addMedicineViewModal.periods,
                                     onChanged: (val) {
                                       addMedicineViewModal.timeList[index]["period"] = val!;
+                                      addMedicineViewModal.timeList.refresh();
                                     },
-                                  )),
+                                  ),
                                   SizedBox(width: Get.width * .01),
         
-                                  Obx(()=> IconButton(
+                                  IconButton(
                                     icon: Icon(Icons.delete, color: Colors.red),
                                     onPressed: () {
                                         addMedicineViewModal.timeList.removeAt(index);
                                     },
-                                  )),
+                                  ),
                                 ],
                               ),
                             );
@@ -152,16 +160,32 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                         ),
         
                       ],
-                    ),
+                    )),
                     SizedBox(height: Get.height * .01),
         
                     Text("How to use", style: TextStyle(fontSize: 16,)),
                     SizedBox(height: Get.height * .006),
                     Row(
                       children: [
-                        Expanded(child: _buildDropdown(label: "days", value: addMedicineViewModal.selectedDays.value, items: ["01", "03", "05", "07", "15", "20", "25", "30"],onChanged: (val) {setState(() {addMedicineViewModal.selectedDays.value = val!;});})),
+                        Expanded(
+                            child:Obx(()=> _buildDropdown(
+                                label: "days",
+                                value: addMedicineViewModal.selectedDays.value,
+                                items: ["01", "03", "05", "07", "15", "20", "25", "30"],
+                                onChanged: (val) {
+                                  addMedicineViewModal.selectedDays.value = val!;
+                                })
+                            )),
                         SizedBox(width: Get.width * .012),
-                        Expanded(child: _buildDropdown(label: "", value: addMedicineViewModal.selectedUsage.value, items: ["Before eat", "After eat"],onChanged: (val) {setState(() {addMedicineViewModal.selectedUsage.value = val!;});})),
+                        Expanded(
+                            child:Obx(()=> _buildDropdown(
+                                label: "",
+                                value: addMedicineViewModal.selectedUsage.value,
+                                items: ["Before eat", "After eat"],
+                                onChanged: (val) {
+                                  addMedicineViewModal.selectedUsage.value = val!;
+                                })
+                            )),
                       ],
                     ),
                     SizedBox(height: Get.height * .03,),
@@ -176,7 +200,13 @@ class _AddMedicinePageState extends State<AddMedicinePage> {
                               backgroundColor: AppColors.orange800,
                               padding: EdgeInsets.symmetric(vertical: 7)),
                           onPressed: () {
-                                addMedicineViewModal.addData(addMedicineViewModal.pillController.text.toString(),addMedicineViewModal.selectedDose.value,addMedicineViewModal.selectedShape.value,addMedicineViewModal.selectedDays.value,addMedicineViewModal.selectedUsage.value);
+                                addMedicineViewModal.addData(
+                                    addMedicineViewModal.pillController.text,
+                                    addMedicineViewModal.selectedDose.value,
+                                    addMedicineViewModal.selectedShape.value,
+                                    addMedicineViewModal.selectedDays.value,
+                                    addMedicineViewModal.selectedUsage.value);
+
                                 addMedicineViewModal.pillController.clear();
                             },
                           child: addMedicineViewModal.loading.value ?

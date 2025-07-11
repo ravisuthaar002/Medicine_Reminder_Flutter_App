@@ -11,8 +11,8 @@ import '../../../utils/utils.dart';
 class SignupViewModal extends GetxController{
 
 
-  final emailController = TextEditingController().obs;
-  final passwordController = TextEditingController().obs;
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   final emailFocusNode = FocusNode().obs;
   final passwordFocusNode = FocusNode().obs;
@@ -52,7 +52,7 @@ class SignupViewModal extends GetxController{
           errorMessage = "Login failed. ${e.message}";
       }
 
-      Utils.toastMessageTop(errorMessage);
+      Utils.toastMessageTopRed(errorMessage);
     } catch (e) {
 
       Utils.toastMessageTop("An error occurred. Please try again.");

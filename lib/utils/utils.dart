@@ -17,7 +17,7 @@ class Utils{
   static toastMessage(String message){
     Fluttertoast.showToast(
         msg: message,
-        backgroundColor: AppColors.black54,
+        backgroundColor: AppColors.orange800,
         gravity: ToastGravity.BOTTOM
     );
   }
@@ -43,8 +43,8 @@ class Utils{
   static toastMessageTopRed(String message){
     Fluttertoast.showToast(
         msg: message,
-        backgroundColor: AppColors.orange800,
-        textColor: AppColors.red,
+        backgroundColor: AppColors.red,
+        textColor: AppColors.white,
         gravity: ToastGravity.TOP,
 
     );
@@ -52,8 +52,8 @@ class Utils{
   static toastMessageTopGreen(String message){
     Fluttertoast.showToast(
         msg: message,
-        backgroundColor: AppColors.orange800,
-        textColor: AppColors.green,
+        backgroundColor: AppColors.green,
+        textColor: AppColors.white,
         gravity: ToastGravity.TOP,
 
     );

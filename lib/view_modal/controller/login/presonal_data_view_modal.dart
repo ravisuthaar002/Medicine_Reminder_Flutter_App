@@ -20,18 +20,22 @@ class PersonalDataViewModal extends GetxController{
   }
 
 
-  final nameController = TextEditingController().obs;
-  final dobController = TextEditingController().obs;
-  final phoneController = TextEditingController().obs;
+  final nameController = TextEditingController();
+  final dobController = TextEditingController();
+  final phoneController = TextEditingController();
 
-  RxString? selectedGender = 'Male'.obs;
+  final nameFocusNode = FocusNode();
+  final phoneFocusNode = FocusNode();
+  final selecterFocusNode = FocusNode();
+  final dobFocusNode = FocusNode();
+
+  RxString selectedGender = 'Male'.obs;
   RxList<String> genderList = ['Male', 'Female', 'Other'].obs;
 
   RxBool loading = false.obs;
 
   send()async{
       loading.value = true;
-    if (_formKey.currentState!.validate()) {
       await FirebaseAuth.instance.verifyPhoneNumber(
           verificationCompleted:
               (PhoneAuthCredential credential) {print("Verification completed");},
@@ -42,20 +46,17 @@ class PersonalDataViewModal extends GetxController{
             Get.toNamed(RoutesName.phoneVerification,
               arguments: {
                 'verificationid': verificationid,
-                'name': nameController.value,
-                'dob': dobController.value,
-                'phone': phoneController.value,
-                'gender': selectedGender.toString(),
+                'name': nameController.text.trim(),
+                'dob': dobController.text.trim(),
+                'phone': phoneController.text ,
+                'gender': selectedGender?.value ?? 'Not selected',
               },
             );
-           },
+            loading.value = false;
+          },
           codeAutoRetrievalTimeout: (String verificationId) {},
           phoneNumber: '+91${phoneController.value.text.toString()}'
       );
-      if (_formKey.currentState!.validate()) {
-      }
-    }
-      loading.value = false;
 
   }
 }

@@ -8,7 +8,7 @@ import 'package:medicine_reminder_flutter_app/utils/utils.dart';
 
 class ForgotPasswordViewModal extends GetxController{
 
-  final emailController = TextEditingController().obs;
+  final emailController = TextEditingController();
   RxBool loading = false.obs;
 
   reset() async {

@@ -10,7 +10,6 @@ import 'package:medicine_reminder_flutter_app/res/routes/routes_name.dart';
 
 import '../../../data/response/app_exceptions.dart';
 import '../../../utils/utils.dart';
-import 'wrapper_view_modal.dart';
 import '../user_preference/user_preference_view_modal.dart';
 
 class LoginViewModal extends GetxController{
@@ -21,11 +20,11 @@ class LoginViewModal extends GetxController{
 
   var userPreference = UserPreference();
 
-  final emailController = TextEditingController().obs;
-  final passwordController = TextEditingController().obs;
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
-  final emailFocusNode = FocusNode().obs;
-  final passwordFocusNode = FocusNode().obs;
+  final emailFocusNode = FocusNode();
+  final passwordFocusNode = FocusNode();
 
 
 

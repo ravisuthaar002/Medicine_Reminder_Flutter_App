@@ -43,7 +43,7 @@ class _SignupPageState extends State<SignupPage> {
                 Text('Email Address',style: TextStyle(fontSize: AppFontSize.small),),
                 SizedBox(height: Get.height * .01,),
                 EmailInputFiled(
-                    controller: loginViewModal.emailController.value,
+                    controller: loginViewModal.emailController,
                     focusNode: loginViewModal.emailFocusNode.value,
                     nextFocusNode: loginViewModal.passwordFocusNode.value),
                 SizedBox(height: Get.height * .03,),
@@ -51,7 +51,7 @@ class _SignupPageState extends State<SignupPage> {
                 Text('Password',style: TextStyle(fontSize: AppFontSize.small),),
                 SizedBox(height: Get.height * .01,),
                 PasswordInputFiled(
-                    controller: loginViewModal.passwordController.value,
+                    controller: loginViewModal.passwordController,
                     obscureText: loginViewModal.obsecurePassword,
                     focusNode: loginViewModal.passwordFocusNode.value),
                 SizedBox(height: Get.height * .02,),
@@ -81,11 +81,8 @@ class _SignupPageState extends State<SignupPage> {
                         padding: EdgeInsets.symmetric(vertical: 8,horizontal: 40)),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        // ScaffoldMessenger.of(context).showSnackBar(
-                        //   SnackBar(content: Text("Logging in...")),
-                        // );
+                        loginViewModal.signup();
                       }
-                      loginViewModal.signup();
                     },
                     child: loginViewModal.loading.value ?
                         CircularProgressIndicator(color: AppColors.white,) :

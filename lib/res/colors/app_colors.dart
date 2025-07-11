@@ -29,6 +29,8 @@ class AppColors{
 
   static final Color orange400 = Colors.orange.shade400;
 
+  static final Color orange200 = Colors.orange.shade200;
+
   static final Color orange100 = Colors.orange.shade100;
 
   static final Color orange = Colors.orange;
@@ -38,5 +40,9 @@ class AppColors{
   static final Color red = Colors.red;
 
   static final Color green = Colors.green;
+
+  static final Color green100 = Colors.green.shade100;
+
+  static final Color teal = Colors.teal;
 
 }

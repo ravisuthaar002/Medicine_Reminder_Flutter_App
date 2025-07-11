@@ -1,67 +1,28 @@
-import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:medicine_reminder_flutter_app/view/home_pages/threeline_menu_page.dart';
+import 'package:medicine_reminder_flutter_app/res/font_size/app_font_size.dart';
+import 'package:medicine_reminder_flutter_app/res/routes/routes_name.dart';
+import 'package:medicine_reminder_flutter_app/view_modal/controller/home_pages/home_screen_view_modal.dart';
 
-class Home_Screen extends StatefulWidget {
+import '../../res/colors/app_colors.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
-  State<Home_Screen> createState() => _Home_ScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _Home_ScreenState extends State<Home_Screen> {
+class _HomeScreenState extends State<HomeScreen> {
   final user = FirebaseAuth.instance.currentUser;
 
+  final homeScreenVieModal = HomeScreenVieModal();
 
 
-  String? nextPillName = '';
-  String? nextPillTime = '';
-  bool isNextPillSet = false;
-  bool nextPillCalculated = false;
-
-
-
-  void findNextPill(QuerySnapshot<Map<String, dynamic>> snapshot) {
-    DateTime now = DateTime.now();
-    DateFormat timeFormat = DateFormat('hh:mm a');
-
-    DateTime? nextTime;
-    String? nextPill;
-    String? nextTimeStr;
-
-    for (var doc in snapshot.docs) {
-      List times = doc["Times"];
-
-      for (var timeStr in times) {
-        try {
-          DateTime pillTime = timeFormat.parse(timeStr);
-          pillTime = DateTime(now.year, now.month, now.day, pillTime.hour, pillTime.minute);
-
-          if (pillTime.isAfter(now)) {
-            if (nextTime == null || pillTime.isBefore(nextTime)) {
-              nextTime = pillTime;
-              nextPill = doc["Pill"];
-              nextTimeStr = timeStr;
-            }
-          }
-        } catch (e) {
-          print("Time parse error: $e");
-        }
-      }
-    }
-
-    setState(() {
-      if (nextPill != null) {
-        nextPillName = nextPill!;
-        nextPillTime = nextTimeStr!;
-      } else {
-        nextPillName = "No more pills today";
-        nextPillTime = "";
-      }
-    });
-  }
 
 
   @override
@@ -74,7 +35,7 @@ class _Home_ScreenState extends State<Home_Screen> {
         .collection("pills")
         .get()
         .then((snapshot){
-      findNextPill(snapshot);
+      homeScreenVieModal.findNextPill(snapshot);
       fetchUserName();
 
     });
@@ -88,10 +49,8 @@ class _Home_ScreenState extends State<Home_Screen> {
           .collection(user!.uid)
           .doc("user_data")
           .get();
-
-      setState(() {
         _name = userDoc['Name'];
-      });
+
     }
   }
 
@@ -113,42 +72,39 @@ class _Home_ScreenState extends State<Home_Screen> {
               Row(
                 children: [
                   CircleAvatar(
-                    radius: 25,
+                    radius: 24,
                     backgroundColor: Colors.grey,
-                    child: Icon(Icons.person, size: 40, color: Colors.white),
+                    child: Icon(Icons.person, size: AppFontSize.large, color: AppColors.white),
                   ),
-                  SizedBox(width: 10),
+                  SizedBox(width: Get.width * .02),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Hii ${_name ?? '...'}!', style: TextStyle(fontSize: 24)),
-                      Text('How do you feel today?', style: TextStyle(fontSize: 14)),
+                      Text('Hii ${_name ?? '...'}!', style: TextStyle(fontSize: AppFontSize.medium)),
+                      Text('How do you feel today?', style: TextStyle(fontSize: AppFontSize.small)),
                     ],
                   ),
                   Spacer(),
                   IconButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ThreeLineMenuPage()),
-                      );
+                      Get.toNamed(RoutesName.threeLineMenu);
                     },
-                    icon: Icon(Icons.menu, size: 30, color: Colors.orange.shade800),
+                    icon: Icon(Icons.menu, size: AppFontSize.mediumPlus, color: AppColors.orange800),
                   ),
                 ],
               ),
 
-              SizedBox(height: 30),
-              Text(formattedDate, style: TextStyle(fontSize: 14)),
-              Text("Your Next Pill", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-              SizedBox(height: 10),
+              SizedBox(height: Get.height * .03),
+              Text(formattedDate, style: TextStyle(fontSize: AppFontSize.small)),
+              Text("Your Next Pill", style: TextStyle(fontSize: AppFontSize.medium, fontWeight: FontWeight.bold)),
+              SizedBox(height: Get.height * .01),
               Text(
-                nextPillName == "" ? "Loading next pill..." : "Next Pill: $nextPillName at $nextPillTime",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.teal),
+                homeScreenVieModal.nextPillName == "" ? "Loading next pill..." : "Next Pill: ${homeScreenVieModal.nextPillName} at ${homeScreenVieModal.nextPillTime}",
+                style: TextStyle(fontSize: AppFontSize.small, fontWeight: FontWeight.w600, color: AppColors.teal),
               ),
 
-              SizedBox(height: 30),
-              Text("All Medicines", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              SizedBox(height: Get.height * .05),
+              Text("All Medicines", style: TextStyle(fontSize: AppFontSize.medium, fontWeight: FontWeight.bold)),
 
               StreamBuilder(
                 stream: FirebaseFirestore.instance.collection(user!.uid).doc("Medicine").collection("pills").snapshots(),
@@ -169,16 +125,16 @@ class _Home_ScreenState extends State<Home_Screen> {
                     itemCount: docs.length,
                     itemBuilder: (context, index) {
                       var doc = docs[index];
-                      bool isNextPill = doc["Pill"] == nextPillName;
+                      bool isNextPill = doc["Pill"] == homeScreenVieModal.nextPillName;
 
                       return Container(
                         margin: EdgeInsets.symmetric(vertical: 5),
                         padding: EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: isNextPill ? Colors.green.shade100 : Colors.orange.shade200,
+                          color: isNextPill ? AppColors.green100 : AppColors.orange200,
                           borderRadius: BorderRadius.circular(15),
                           border: isNextPill
-                              ? Border.all(color: Colors.green, width: 2)
+                              ? Border.all(color: AppColors.green, width: 2)
                               : Border.all(color: Colors.transparent),
                         ),
                         child: Row(
@@ -188,17 +144,17 @@ class _Home_ScreenState extends State<Home_Screen> {
                               width: 50,
                               height: 50,
                             ),
-                            SizedBox(width: 10),
+                            SizedBox(width: Get.width * .05),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(doc["Pill"], style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                                  SizedBox(height: 4),
-                                  Text("Dose: ${doc["Dose"]} - ${doc["Usage"]}", style: TextStyle(fontSize: 14)),
+                                  Text(doc["Pill"], style: TextStyle(fontSize: AppFontSize.smallPlus, fontWeight: FontWeight.bold)),
+                                  SizedBox(height: Get.height * .005),
+                                  Text("Dose: ${doc["Dose"]} - ${doc["Usage"]}", style: TextStyle(fontSize: AppFontSize.small)),
                                   Text(
                                     "Time: ${(doc["Times"] as List).join(", ")}",
-                                    style: TextStyle(fontSize: 14),
+                                    style: TextStyle(fontSize: AppFontSize.small),
                                   ),
                                 ],
                               ),

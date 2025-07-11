@@ -74,19 +74,32 @@ class OtpVerificationViewModal extends GetxController {
       }
       Utils.toastMessageTop(errorMessage);
     }catch (e) {
-      Utils.toastMessage("Verification failed. Try again.");
+      Utils.toastMessageTopRed("Verification failed. Try again.");
     }
     loading.value = false;
   }
 
   Future<void> addUserData() async {
     final user = FirebaseAuth.instance.currentUser;
-    await FirebaseFirestore.instance.collection('users').doc(user!.uid).set({
+     await FirebaseFirestore.instance.collection('users').doc(user!.uid).set({
       'name': name,
       'phone': phone,
       'dob': dob,
       'gender': gender,
     });
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    // Get phone from arguments
+    phone = Get.arguments['phone'] ?? '';
+
+    if (phone.isEmpty) {
+      // optional: throw error or log
+      Utils.toastMessageTopRed("Phone number not passed to OTP");
+    }
   }
 
   void resendOTP() async {
@@ -99,8 +112,8 @@ class OtpVerificationViewModal extends GetxController {
       verificationFailed: (FirebaseAuthException e) {
         Utils.toastMessageTop("OTP resend failed");
       },
-      codeSent: (String verificationId, int? resendToken) {
-        verificationId = verificationId;
+      codeSent: (String newVerificationId, int? resendToken) {
+        verificationId = newVerificationId;
         Utils.toastMessageTop("OTP resent successfully");
         // Restart the timer
         resendTime.value = 60;

@@ -6,6 +6,8 @@ import 'package:medicine_reminder_flutter_app/res/colors/app_colors.dart';
 import 'package:medicine_reminder_flutter_app/res/font_size/app_font_size.dart';
 import 'package:medicine_reminder_flutter_app/view_modal/controller/login/presonal_data_view_modal.dart';
 
+import '../../utils/utils.dart';
+
 class PersonalDataPage extends StatefulWidget {
   const PersonalDataPage({super.key});
 
@@ -20,6 +22,7 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("object");
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(size: AppFontSize.mediumPlus,color: AppColors.white),
@@ -46,9 +49,12 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+
                 SizedBox(height: Get.height * .01),
+
                 TextFormField(
-                  controller: personalDataViewModal.nameController.value,
+                  controller: personalDataViewModal.nameController,
+                  focusNode: personalDataViewModal.nameFocusNode,
                   style: TextStyle(fontSize: AppFontSize.medium),
                   decoration: InputDecoration(
                     hintText: 'Ravi...',
@@ -68,11 +74,15 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                       borderSide: BorderSide(width: 2, color: AppColors.grey),
                     ),
                   ),
+                  onFieldSubmitted: (value){
+                    Utils.fieldFocusChange(context, personalDataViewModal.nameFocusNode!, personalDataViewModal.phoneFocusNode!);
+                  },
                   validator: (value) => value == null || value.isEmpty
                       ? 'Please enter name'
                       : null,
                 ),
-                SizedBox(height: 30),
+
+                SizedBox(height: Get.height * .04),
 
                 Text(
                   '  Phone Number',
@@ -82,9 +92,12 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+
                 SizedBox(height: Get.height * .01),
+
                 TextFormField(
-                  controller: personalDataViewModal.phoneController.value,
+                  controller: personalDataViewModal.phoneController,
+                  focusNode: personalDataViewModal.phoneFocusNode,
                   keyboardType: TextInputType.number,
                   style: TextStyle(fontSize: AppFontSize.medium),
                   decoration: InputDecoration(
@@ -105,9 +118,13 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                       borderSide: BorderSide(width: 2, color: AppColors.grey),
                     ),
                   ),
+                  onFieldSubmitted: (value){
+                    Utils.fieldFocusChange(context, personalDataViewModal.phoneFocusNode!, personalDataViewModal.selecterFocusNode!);
+                  },
                   validator: (value) => personalDataViewModal.validatePhoneNumber(value),
                 ),
-                SizedBox(height: Get.height * .01),
+
+                SizedBox(height: Get.height * .04),
 
                 Text(
                   '  Gender',
@@ -117,9 +134,12 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+
                 SizedBox(height: Get.height * .01),
+
                 DropdownButtonFormField<String>(
-                  value: personalDataViewModal.selectedGender.toString(),
+                  value: personalDataViewModal.selectedGender!.value,
+                  focusNode: personalDataViewModal.selecterFocusNode,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 10,
@@ -141,21 +161,22 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                       borderSide: BorderSide(width: 2, color: AppColors.grey),
                     ),
                   ),
-                  // validator:
                   icon: Icon(Icons.arrow_drop_down, size: 30),
                   items:  personalDataViewModal.genderList.map((String value) {
                     return  DropdownMenuItem<String>(
                       value: value,
-                      child:Obx(()=> Text(value, style: TextStyle(fontSize: AppFontSize.medium)),
-                    ));
+                      child: Text(value, style: TextStyle(fontSize: AppFontSize.medium)),
+                    );
                     }).toList(),
                   onChanged: (newValue) {
-                    personalDataViewModal.selectedGender = newValue! as RxString?;
+                    personalDataViewModal.selectedGender!.value = newValue!;
+                    Utils.fieldFocusChange(context, personalDataViewModal.selecterFocusNode!, personalDataViewModal.dobFocusNode!,);
                   },
                   isDense: false,
                   isExpanded: true,
                 ),
-                SizedBox(height: Get.height * .01),
+
+                SizedBox(height: Get.height * .04),
 
                 Text(
                   '  Date of Birth',
@@ -165,9 +186,12 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+
                 SizedBox(height: Get.height * .01),
-               Obx(()=> TextFormField(
-                  controller: personalDataViewModal.dobController.value,
+
+                TextFormField(
+                  controller: personalDataViewModal.dobController,
+                  focusNode: personalDataViewModal.dobFocusNode,
                   style: TextStyle(fontSize: 18),
                   decoration: InputDecoration(
                     hintText: '15oct2003 / 15/10/2003',
@@ -190,9 +214,9 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                   validator: (value) => value == null || value.isEmpty
                       ? 'Please enter Date of Birth'
                       : null,
-                )),
+                ),
 
-                SizedBox(height: Get.height * .01),
+                SizedBox(height: Get.height * .06),
 
                 SizedBox(
                   width: double.infinity,
@@ -202,7 +226,9 @@ class _PersonalDataPageState extends State<PersonalDataPage> {
                       padding: EdgeInsets.symmetric(vertical: 8),
                     ),
                     onPressed: (){
-                      personalDataViewModal.send();
+                      if (_formKey.currentState!.validate()) {
+                        personalDataViewModal.send();
+                      }
                     },
                     child:Obx(()=> personalDataViewModal.loading.value ?
                      CircularProgressIndicator(color: AppColors.white,) :

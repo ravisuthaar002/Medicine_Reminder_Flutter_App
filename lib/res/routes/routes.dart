@@ -1,10 +1,11 @@
 
 
 import 'package:get/get.dart';
-import 'package:medicine_reminder_flutter_app/home_page.dart';
+import 'package:medicine_reminder_flutter_app/view/home_pages/home_page.dart';
 import 'package:medicine_reminder_flutter_app/res/routes/routes_name.dart';
 import 'package:medicine_reminder_flutter_app/view/home_pages/add_medicine_view.dart';
 import 'package:medicine_reminder_flutter_app/view/home_pages/calendar_view.dart';
+import 'package:medicine_reminder_flutter_app/view/home_pages/home_screen.dart';
 import 'package:medicine_reminder_flutter_app/view/home_pages/horizontalDateSelector_view.dart';
 import 'package:medicine_reminder_flutter_app/view/home_pages/threeline_menu_page.dart';
 import 'package:medicine_reminder_flutter_app/view/login/forgot_password.dart';
@@ -83,6 +84,12 @@ class AppRoutes{
         transitionDuration: Duration(milliseconds: 250)
     ),
     GetPage(
+        name: RoutesName.homeScreen,
+        page: () => HomeScreen(),
+        transition: Transition.leftToRightWithFade,
+        transitionDuration: Duration(milliseconds: 250)
+    ),
+    GetPage(
         name: RoutesName.addMedicinePage,
         page: () => AddMedicinePage(),
         transition: Transition.leftToRightWithFade,
@@ -95,14 +102,21 @@ class AppRoutes{
         transitionDuration: Duration(milliseconds: 250)
     ),
     GetPage(
-        name: RoutesName.horizontalDateSelector,
-        page: () {
-        final Function(DateTime) onDateSelected = Get.arguments['onDateSelected'];
-        return HorizontalDateSelector(onDateSelected: onDateSelected);
-        },
-        transition: Transition.leftToRightWithFade,
-        transitionDuration: Duration(milliseconds: 250),
+      name: RoutesName.horizontalDateSelector,
+      page: () {
+        final args = Get.arguments as Map<String, dynamic>;
+        final Function(DateTime) onDateSelected = args['onDateSelected'];
+        final DateTime selectedDate = args['selectedDate'];
+
+        return HorizontalDateSelector(
+          onDateSelected: onDateSelected,
+          selectedDate: selectedDate,
+        );
+      },
+      transition: Transition.leftToRightWithFade,
+      transitionDuration: Duration(milliseconds: 250),
     ),
+
     GetPage(
         name: RoutesName.threeLineMenu,
         page: () => ThreeLineMenuPage(),

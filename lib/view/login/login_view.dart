@@ -42,17 +42,17 @@ class _LoginViewState extends State<LoginView> {
                 Text('Email Address',style: TextStyle(fontSize: AppFontSize.small),),
                 SizedBox(height: Get.height * .01,),
                 EmailInputFiled(
-                    controller: loginViewModal.emailController.value,
-                    focusNode: loginViewModal.emailFocusNode.value,
-                    nextFocusNode: loginViewModal.passwordFocusNode.value),
+                    controller: loginViewModal.emailController,
+                    focusNode: loginViewModal.emailFocusNode,
+                    nextFocusNode: loginViewModal.passwordFocusNode),
                 SizedBox(height: Get.height * .02,),
 
                 Text('Password',style: TextStyle(fontSize: AppFontSize.small),),
                 SizedBox(height: Get.height * .01,),
                 PasswordInputFiled(
-                    controller: loginViewModal.passwordController.value,
+                    controller: loginViewModal.passwordController,
                     obscureText: loginViewModal.obsecurePassword,
-                    focusNode: loginViewModal.passwordFocusNode.value,),
+                    focusNode: loginViewModal.passwordFocusNode,),
 
                 TextButton(onPressed: (){
                  Get.toNamed(RoutesName.forgotPassword);
@@ -66,12 +66,9 @@ class _LoginViewState extends State<LoginView> {
                           backgroundColor: AppColors.orange800,
                           padding: EdgeInsets.symmetric(vertical: 8,horizontal: 40)),
                       onPressed: () {
-                        loginViewModal.loginApi();
                         if (_formKey.currentState!.validate()) {
-                          // ScaffoldMessenger.of(context).showSnackBar(
-                          //   SnackBar(content: Text("Logging in...")),
-                          // );
-                        }
+                          loginViewModal.loginApi();
+                          }
                       },
                       child: loginViewModal.loading.value ?
                        CircularProgressIndicator(color: AppColors.white,) :

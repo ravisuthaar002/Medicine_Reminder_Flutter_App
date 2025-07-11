@@ -19,6 +19,8 @@ class RoutesName {
 
   static const String homePage = '/home_page';
 
+  static const String homeScreen = '/home_screen';
+
   static const String addMedicinePage = '/addMedicine_page';
 
   static const String calenderPage = '/calender_page';

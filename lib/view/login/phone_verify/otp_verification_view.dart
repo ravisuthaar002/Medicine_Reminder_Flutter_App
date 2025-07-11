@@ -59,6 +59,9 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
       ),
     );
     return Scaffold(
+      appBar: AppBar(
+
+      ),
       body: SingleChildScrollView(
         child: ConstrainedBox(
           constraints: BoxConstraints(

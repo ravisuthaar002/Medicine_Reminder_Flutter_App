@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:medicine_reminder_flutter_app/res/colors/app_colors.dart';
-import 'package:medicine_reminder_flutter_app/view_modal/controller/home_pages/horizontalDataSelector_view_modal.dart';
 
-class HorizontalDateSelector extends StatefulWidget {
+import '../../res/colors/app_colors.dart';
+
+class HorizontalDateSelector extends StatelessWidget {
   final Function(DateTime) onDateSelected;
+  final DateTime selectedDate;
 
-  const HorizontalDateSelector({super.key, required this.onDateSelected});
-
-  @override
-  State<HorizontalDateSelector> createState() => _HorizontalDateSelectorState();
-}
-
-class _HorizontalDateSelectorState extends State<HorizontalDateSelector> {
-
-  final horizontalDataSelector = HorizontalDataSelectorViewModal();
+  const HorizontalDateSelector({
+    super.key,
+    required this.onDateSelected,
+    required this.selectedDate,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,31 +22,41 @@ class _HorizontalDateSelectorState extends State<HorizontalDateSelector> {
         itemCount: 15,
         itemBuilder: (_, index) {
           DateTime date = DateTime.now().add(Duration(days: index));
-              horizontalDataSelector.selected.value = date.day == horizontalDataSelector.selectedDate.day &&
-              date.month == horizontalDataSelector.selectedDate.month &&
-              date.year == horizontalDataSelector.selectedDate.year;
+          bool isSelected = DateFormat('yyyy-MM-dd').format(date) ==
+              DateFormat('yyyy-MM-dd').format(selectedDate);
 
-          return Obx(()=> GestureDetector(
-            onTap: () {
-                horizontalDataSelector.selectedDate = date;
-              widget.onDateSelected(date);
-            },
+          return GestureDetector(
+            onTap: () => onDateSelected(date),
             child: Container(
               width: 50,
-              margin: EdgeInsets.symmetric(horizontal: 8),
-              padding: EdgeInsets.all(10),
+              margin: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: horizontalDataSelector.selected.value ? AppColors.orange800 : AppColors.grey300,
+                color: isSelected ? AppColors.orange800 : AppColors.grey300,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(DateFormat.E().format(date)), // Mon, Tue, etc
-                  Text(date.day.toString()),
+                  Text(
+                    DateFormat.E().format(date),
+                    style: TextStyle(
+                      color: isSelected ? Colors.white : Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    date.day.toString(),
+                    style: TextStyle(
+                      color: isSelected ? Colors.white : Colors.black,
+                      fontSize: 16,
+                    ),
+                  ),
                 ],
               ),
             ),
-          ));
+          );
         },
       ),
     );

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET" />
     <application
-        android:label="medicine_reminder_flutter_app"
+        android:label="Medicine Reminder"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

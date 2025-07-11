@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:medicine_reminder_flutter_app/res/routes/routes_name.dart';
 import 'package:medicine_reminder_flutter_app/view/home_pages/add_medicine_view.dart';
 import 'package:medicine_reminder_flutter_app/view/home_pages/calendar_view.dart';
-import 'package:medicine_reminder_flutter_app/home_screen.dart';
+import 'package:medicine_reminder_flutter_app/view/home_pages/home_screen.dart';
 import 'package:medicine_reminder_flutter_app/res/colors/app_colors.dart';
 
 class HomePage extends StatefulWidget{
@@ -16,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    Home_Screen(),
+    HomeScreen(),
     AddMedicinePage(),
     CalendarView(),
   ];
@@ -33,17 +35,16 @@ class _HomePageState extends State<HomePage> {
     child: BottomNavigationBar(
       elevation: 1 ,
         backgroundColor: AppColors.grey300,
-        iconSize: 35,
+        iconSize: 25,
         currentIndex: _currentIndex,
         showSelectedLabels: false,
         showUnselectedLabels: false,
       onTap: (index) {
         if (index == 1) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddMedicinePage()),
-          );
-        } else {
+
+          Get.toNamed(RoutesName.addMedicinePage);
+
+     } else {
           setState(() {
             _currentIndex = index;
           });
@@ -62,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: AppColors.orange800,
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(10),
                   ),
                  child:  Icon(Icons.add,color: AppColors.white,),
             ),

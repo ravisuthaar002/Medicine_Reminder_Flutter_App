@@ -40,7 +40,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 Text('Email Address',style: TextStyle(fontSize: AppFontSize.small),),
                 SizedBox(height: Get.height * .01,),
 
-                EmailInputFiled(controller: forgotPasswordViewModal.emailController.value),
+                EmailInputFiled(controller: forgotPasswordViewModal.emailController),
 
                 SizedBox(height: Get.height * .07,),
 
@@ -51,8 +51,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         backgroundColor: AppColors.orange800,
                         padding: EdgeInsets.symmetric(vertical: 8,horizontal: 40)),
                     onPressed: () {
-                      forgotPasswordViewModal.reset();
                       if (_formKey.currentState!.validate()) {}
+                         forgotPasswordViewModal.reset();
                     },
                     child:Obx(()=> forgotPasswordViewModal.loading.value ?
                         CircularProgressIndicator(color: AppColors.white,) :

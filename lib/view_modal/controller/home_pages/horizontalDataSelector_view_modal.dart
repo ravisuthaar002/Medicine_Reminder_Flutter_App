@@ -4,6 +4,6 @@
 import 'package:get/get.dart';
 
 class HorizontalDataSelectorViewModal extends GetxController{
-  DateTime selectedDate = DateTime.now().obs as DateTime;
+  Rx<DateTime> selectedDate = DateTime.now().obs;
   RxBool selected = false.obs;
 }
